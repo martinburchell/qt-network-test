@@ -23,8 +23,15 @@ gcc {
     QMAKE_CXXFLAGS += -Werror  # warnings become errors
 }
 
-if (gcc | clang):!ios:!android {
-    QMAKE_CXXFLAGS += -Wno-deprecated-copy
+if (gcc | clang):!ios:!android!macx {
+    !lessThan(COMPILER_MAJOR_VERSION, 9) {
+        QMAKE_CXXFLAGS += -Wno-deprecated-copy
+    }
+}
+
+if (ios | macx)  {
+    QMAKE_CFLAGS_WARN_ON += -Wno-deprecated-copy
+    QMAKE_CXXFLAGS_WARN_ON += -Wno-deprecated-copy
 }
 
 gcc {
