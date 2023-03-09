@@ -33,6 +33,11 @@ public:
         QSslConfiguration config = QSslConfiguration::defaultConfiguration();
         config.setProtocol(QSsl::SecureProtocols);
         request.setSslConfiguration(config);
+        QListIterator<QSslCertificate> cert_it(QSslConfiguration::systemCaCertificates());
+        status_message("CA Certificates:");
+        while (cert_it.hasNext()) {
+            status_message(cert_it.next().toText());
+        }
 
         QUrl url("https://camcops.cpft.nhs.uk:443/api");
         request.setUrl(url);
@@ -43,11 +48,11 @@ public:
         dict["device"] = QUuid::createUuid().toString();
 
         QUrlQuery postdata;
-        QMapIterator<QString, QString> it(dict);
-        while (it.hasNext()) {
-            it.next();
-            postdata.addQueryItem(QUrl::toPercentEncoding(it.key()),
-                                  QUrl::toPercentEncoding(it.value()));
+        QMapIterator<QString, QString> dict_it(dict);
+        while (dict_it.hasNext()) {
+            dict_it.next();
+            postdata.addQueryItem(QUrl::toPercentEncoding(dict_it.key()),
+                                  QUrl::toPercentEncoding(dict_it.value()));
         }
 
         request.setHeader(QNetworkRequest::ContentTypeHeader,
