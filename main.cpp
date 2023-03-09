@@ -85,14 +85,19 @@ public:
 
     void ssl_errors(QNetworkReply *reply, const QList<QSslError> &errors)
     {
-        Q_UNUSED(reply)
         status_message("SSL Errors:");
         QListIterator<QSslError> it(errors);
         while (it.hasNext()) {
             auto error = it.next();
             status_message(error.errorString());
         }
-
+        QSslConfiguration config = reply->sslConfiguration();
+        status_message("Peer certificate: " + config.peerCertificate().toText());
+        QListIterator<QSslCertificate> cert_it(config.peerCertificateChain());
+        status_message("Peer certificate chain:");
+        while (cert_it.hasNext()) {
+            status_message(cert_it.next().toText());
+        }
     }
 
     void status_message(const QString& msg) const
