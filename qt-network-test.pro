@@ -19,6 +19,11 @@ DEFINES += QT_DEPRECATED_WARNINGS
 # Compiler and linker flags
 # =============================================================================
 
+gcc | clang {
+    COMPILER_VERSION = $$system($$QMAKE_CXX " -dumpversion")
+    COMPILER_MAJOR_VERSION = $$str_member($$COMPILER_VERSION)
+}
+
 gcc {
     QMAKE_CXXFLAGS += -Werror  # warnings become errors
 }
