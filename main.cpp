@@ -33,11 +33,6 @@ public:
         QSslConfiguration config = QSslConfiguration::defaultConfiguration();
         config.setProtocol(QSsl::SecureProtocols);
         request.setSslConfiguration(config);
-        QListIterator<QSslCertificate> cert_it(QSslConfiguration::systemCaCertificates());
-        status_message("CA Certificates:");
-        while (cert_it.hasNext()) {
-            status_message(cert_it.next().toText());
-        }
 
         QUrl url("https://webhook.site/e5b919b3-01dd-4f77-bbc3-f77b2be3ab68");
         request.setUrl(url);
@@ -75,7 +70,6 @@ public:
             status_message(error.errorString());
         }
         QSslConfiguration config = reply->sslConfiguration();
-        status_message("Peer certificate: " + config.peerCertificate().toText());
         QListIterator<QSslCertificate> cert_it(config.peerCertificateChain());
         status_message("Peer certificate chain:");
         while (cert_it.hasNext()) {
