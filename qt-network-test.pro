@@ -24,10 +24,6 @@ gcc | clang {
     COMPILER_MAJOR_VERSION = $$str_member($$COMPILER_VERSION)
 }
 
-gcc {
-    QMAKE_CXXFLAGS += -Werror  # warnings become errors
-}
-
 if (gcc | clang):!ios:!android!macx {
     !lessThan(COMPILER_MAJOR_VERSION, 9) {
         QMAKE_CXXFLAGS += -Wno-deprecated-copy
