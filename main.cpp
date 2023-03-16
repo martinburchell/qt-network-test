@@ -42,24 +42,7 @@ public:
         QUrl url("https://webhook.site/e5b919b3-01dd-4f77-bbc3-f77b2be3ab68");
         request.setUrl(url);
 
-        QMap<QString, QString> dict;
-        dict["operation"] = "check_device_registered";
-        dict["camcops_version"] = "2.4.15";
-        dict["device"] = QUuid::createUuid().toString();
-
-        QUrlQuery postdata;
-        QMapIterator<QString, QString> dict_it(dict);
-        while (dict_it.hasNext()) {
-            dict_it.next();
-            postdata.addQueryItem(QUrl::toPercentEncoding(dict_it.key()),
-                                  QUrl::toPercentEncoding(dict_it.value()));
-        }
-
-        request.setHeader(QNetworkRequest::ContentTypeHeader,
-                          "application/x-www-form-urlencoded");
-        const QByteArray final_data = postdata.toString(QUrl::FullyEncoded).toUtf8();
-        status_message("Request to server: " + final_data);
-        status_message(&"... sending " [ final_data.length()]);
+        status_message("Request to server: " + url.toString());
 
         auto mgr = new QNetworkAccessManager();
         QObject::connect(mgr, &QNetworkAccessManager::finished,
@@ -67,7 +50,7 @@ public:
         QObject::connect(mgr, &QNetworkAccessManager::sslErrors,
                          this, &TestDialog::ssl_errors);
 
-        mgr->post(request, final_data);
+        mgr->get(request);
     }
 
     void reply(QNetworkReply* reply)
