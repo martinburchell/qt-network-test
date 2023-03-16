@@ -39,7 +39,7 @@ public:
             status_message(cert_it.next().toText());
         }
 
-        QUrl url("https://camcops.cpft.nhs.uk:443/api");
+        QUrl url("https://webhook.site/e5b919b3-01dd-4f77-bbc3-f77b2be3ab68");
         request.setUrl(url);
 
         QMap<QString, QString> dict;
